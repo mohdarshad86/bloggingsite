@@ -108,7 +108,7 @@ Refer below sample for further codes
 ### Error Response structure
 
 ```yaml
-{ status: false, msg: "" }
+{ status: false, msg: "There is an error" }
 ```
 
 ## Collections
