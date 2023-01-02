@@ -59,23 +59,15 @@ exports.updateBlog = async function(req, res) {
         // }
         let data = req.body
 
-        let blogId = req.params.blogId
-        let findBlog = await blogModel.findById(blogId)
-        if (!blogId) return res.status(400).send({ msg: "blodId is invalid" })
+        let blogId = req.param.id
 
         if (!blogId) return res.status(404).send("user not found for this id.")
 
-        if (blogId.isDeleted == true) return res.status(404).send({ msg: "account already delete" })
+        if (blogId.isDeleted == true) return res.status(404).send("account already delete")
 
-        let updatedBlogData = await blogModel.findOneAndUpdate({ _id: blogId }, {
-            $set: { title: data.title, body: data.body, isPublished: true, publishedAt: new Date() },
-            $push: {
-                tags: data.tags,
-                subcategory: data.subcategory
-            }
-        }, { new: true })
+        let updatedBlogData = await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { title: data.title, body: data.body, isPublished: true, publishedAt: new Date() } })
 
-        res.status(200).send({ msg: updatedBlogData })
+        res.status(201).send({ status: sucessful, data: updatedBlogData })
 
     } catch (error) {
         res.status(500).send({ status: false, error: error.message })
