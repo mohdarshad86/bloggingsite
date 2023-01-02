@@ -111,7 +111,8 @@ Refer below sample for further codes
 { status: false, msg: "There was an error in our program, we solved it successfully" }
 ```
 
-## Collections
+## Collections 
+{ mongoDB-link "mongodb+srv://Dreamerboy:Function-Up2022@cluster0.lwkqomf.mongodb.net/BloggingSite"}
 
 ### Blogs
 
