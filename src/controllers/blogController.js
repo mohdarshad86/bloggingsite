@@ -13,7 +13,7 @@ const createBlog = async function (req, res) {
         .send({ status: false, msg: "Please Provide authorId" });
     let authors = await authorModel.findById(data.authorId);
     if (!authors)
-      return res
+      return res   
         .status(404)
         .send({ status: false, msg: "Author id not exists" });
 
@@ -28,18 +28,18 @@ const createBlog = async function (req, res) {
 
 exports.getBlog = async (req, res) => {
   try {
-if( req.query.id ||req.query.category || req.query.subcategory || req.query.tags){
-    
-}
-
+    let {authorId, category, subcategory, tags}=req.query
+//  if( req.query.id ||req.query.category || req.query.subcategory || req.query.tags){
+//  res.send({status:false, msg:"Please provide valid field"})
+//  }
     let blogs = await blogModel.find({
       isDeleted: false,
       isPublished: true,
       $or: [
-        { authorId: req.query.id },
-        { category: req.query.category },
-        { subcategory: req.query.subcategory },
-        { tags: req.query.tags },
+        { authorId: authorId },
+        { category: category },
+        { subcategory:subcategory },
+        { tags: tags },
       ],
     });
     res.status(200).send({ status: true, data: blogs });
@@ -48,5 +48,33 @@ if( req.query.id ||req.query.category || req.query.subcategory || req.query.tags
     res.status(500).send({ status: false, msg: "Internal Server Error" });
   }
 };
+
+
+exports.updateBlog = async function ( req , res ){
+  try {
+      // let blogId = req.param.Id
+      // let blogData = await authorModel.findById(blogId)
+      // if(!blogData){
+      //     return res.status(404).send("blog id not found")
+      // }
+      let data = req.body
+
+      let blogId = req.param.id
+
+      if(!blogId) return res.status(404).send("user not found for this id.")
+
+      if( blogId.isDeleted == true) return res.status(404).send("account already delete")
+  
+      let updatedBlogData = await blogModel.findOneAndUpdate({_id : blogId},{$set :{title : data.title , body : data.body , isPublished:true , publishedAt :new Date ()}})
+      
+      res.status(201).send({status : sucessful , data : updatedBlogData})
+      
+  } catch (error) {
+      res.status(500).send({status:false , error : error.message})
+  }
+}
+
+
+
 
 module.exports.createBlog = createBlog;
