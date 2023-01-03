@@ -31,22 +31,22 @@ exports.createBlog = async function (req, res) {
 
 exports.getBlog = async (req, res) => {
   try {
-    // let { authorId, category, subcategory, tags } = req.query
+    let { authorId, category, subcategory, tags } = req.query
 
     let blogs = await blogModel.find({
       isDeleted: false,
       isPublished: true,
       $or: [
-        { authorId: req.query.authorId },
-        { category: req.query.category },
-        { subcategory: req.query.subcategory },
-        { tags: req.query.tags },
+        { authorId: authorId },
+        { category: category },
+        { subcategory: subcategory },
+        { tags: tags },
       ],
     });
     res.status(200).send({ status: true, data: blogs });
   } catch (error) {
     console.log(error.message, error);
-    res.status(500).send({ status: false, msg: "Internal Server Error" });
+    res.status(500).send({ status: false, msg: error.message });
   }
 };
 

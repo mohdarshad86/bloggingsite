@@ -14,7 +14,7 @@ module.exports.createAuthor = async function (req, res) {
     res.status(201).send({ status: true, data: authorData });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send({ status: false, msg: "Internal error" });
+    res.status(500).send({ status: false, msg: error.message });
   }
 };
 
@@ -24,8 +24,6 @@ exports.getAuthor = async (req, res) => {
     res.status(200).send({ status: true, data: authors });
   } catch (error) {
     console.log(error.message, error);
-    res.status(500).send({ status: false, msg: "Internal Server Error" });
+    res.status(500).send({ status: false, msg: error.message });
   }
 };
-
-
