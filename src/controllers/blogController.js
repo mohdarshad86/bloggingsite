@@ -112,7 +112,7 @@ exports.deleteBlogByParams = async(req, res) => {
 exports.DeletedByQuery = async(req, res) => {
     try {
         let filterdata = { isDeleted: false }
-        let { category, subcategory, tags, authorId } = req.query
+        let { category, subcategory, tags, authorId, isPublished } = req.query
 
         if (authorId) {
             filterdata.authorId = authorId
@@ -127,6 +127,9 @@ exports.DeletedByQuery = async(req, res) => {
         if (tags) {
             filterdata.tags = tags
         }
+        if (isPublished) {
+            filterdata.isPublished = isPublished
+        }
 
         let data = await blogModel.findOne(filterdata)
         if (!data)
@@ -138,6 +141,5 @@ exports.DeletedByQuery = async(req, res) => {
     } catch (error) {
         res.status(500).send({ status: false, msg: error.message })
     }
-
 
 };
