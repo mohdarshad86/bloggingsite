@@ -118,7 +118,22 @@ exports.deleteBlogByParams = async (req, res) => {
 };
 
 exports.DeletedByQuery = async (req, res) => {
-  let { authorid, tags, category, subcategory, isPublished } = req.query;
+  try {
+    let { authorId, tags, category, subcategory, isPublished  } = req.query;
+  console.log(req.query);
+
+  if(isPublished == false ) res.status({status : false , msg : "blog is not published"})
+  if((authorId ||tags || category || subcategory|| isPublished ).isDeleted == true ) res.status({status : false , msg : "blog is already deleted"})
+
+   let dataCheck = await blogModel.findOneAndUpdate({$or :[{category : category} ,{subcategory : subcategory}]},{$set : {isDeleted : true , deletedAt : new Date()}},{new : true})
+   console.log(dataCheck);
+  if(!dataCheck){
+    return res.status(404).send({status : false , msg: "Blogs document does not exist"})
+  }
+  return res.status(200).send({status : true , data : dataCheck})
+  } catch (error) {
+    res.status(500).send({status : false, msg : error.message})
+  }
 
 
 };
