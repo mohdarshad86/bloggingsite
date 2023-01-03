@@ -1,7 +1,7 @@
 const blogModel = require("../models/blogModel");
 const authorModel = require("../models/authorModel");
 
-exports.createBlog = async function (req, res) {
+exports.createBlog = async (req, res) => {
   try {
     let data = req.body;
     if (Object.keys(data).length === 0)
@@ -31,7 +31,7 @@ exports.createBlog = async function (req, res) {
 
 exports.getBlog = async (req, res) => {
   try {
-    let { authorId, category, subcategory, tags } = req.query
+    let { authorId, category, subcategory, tags } = req.query;
 
     let blogs = await blogModel.find({
       isDeleted: false,
@@ -50,7 +50,7 @@ exports.getBlog = async (req, res) => {
   }
 };
 
-exports.updateBlog = async function (req, res) {
+exports.updateBlog = async (req, res) => {
   try {
     let data = req.body;
 
@@ -83,4 +83,42 @@ exports.updateBlog = async function (req, res) {
   } catch (error) {
     res.status(500).send({ status: false, msg: error.message });
   }
+};
+
+exports.deleteBlogByParams = async (req, res) => {
+  try {
+    let blogId = req.params.blogId;
+
+    let data = await blogModel.findById(blogId);
+
+    if (!data)
+      return res
+        .status(404)
+        .send({ status: false, msg: "Blog does not exist" });
+
+    if (data.isDeleted == true) {
+      return res
+        .status(404)
+        .send({ status: false, msg: "Blog already deleted" });
+    }
+
+    let deleteBlog = await blogModel.findOneAndUpdate(
+      { _id: blogId },
+      { $set: { isDeleted: true, deletedAt: new Date() } },
+      { new: true }
+    );
+
+    console.log(deleteBlog);
+
+    res.status(200).send({ status: true, msg: "Blog deleted" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ status: false, msg: error.message });
+  }
+};
+
+exports.DeletedByQuery = async (req, res) => {
+  let { authorid, tags, category, subcategory, isPublished } = req.query;
+
+
 };
