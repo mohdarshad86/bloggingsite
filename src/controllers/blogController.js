@@ -32,7 +32,7 @@ exports.createBlog = async(req, res) => {
 exports.getBlog = async(req, res) => {
     try {
         let { authorId, category, subcategory, tags } = req.query;
-
+        
         let blogs = await blogModel.find({
             isDeleted: false,
             isPublished: true,
@@ -42,7 +42,13 @@ exports.getBlog = async(req, res) => {
                 { subcategory: subcategory },
                 { tags: tags },
             ],
+            
+
         });
+        if(Object.keys(blogs).length==0){
+            return res.status(404).send({ status: false, msg: "blog already deleted or unpublished" });
+
+        }
         res.status(200).send({ status: true, data: blogs });
     } catch (error) {
         console.log(error.message, error);
