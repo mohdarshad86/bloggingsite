@@ -1,13 +1,18 @@
 const authorModel = require("../models/authorModel");
 const jwt = require("jsonwebtoken");
 
-module.exports.createAuthor = async function (req, res) {
+module.exports.createAuthor = async (req, res) => {
   try {
     let data = req.body;
+    const { fname, lname, password } = data;
     if (!data) {
       res
         .status(400)
         .send({ status: false, msg: "Please provide details in body" });
+    }
+
+    if (fname == "" || lname == "" || password == "") {
+      return res.status(400).send({ status: false, msg: "Bad request" });
     }
 
     let authorData = await authorModel.create(data);
@@ -34,7 +39,7 @@ exports.loginAuthor = async (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
 
-    if (!email || (email == "" && !password) || password == "") {
+    if (!email || email == "" && !password || password == "") {
       res.status(400).send({
         status: false,
         msg: "Please provide correct email or password",
@@ -66,5 +71,4 @@ exports.loginAuthor = async (req, res) => {
     console.log(error.message);
     res.status(500).send({ status: false, msg: error.message });
   }
-  
 };

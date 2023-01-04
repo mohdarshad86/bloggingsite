@@ -3,11 +3,13 @@ const mongoose = require("mongoose")
 const blogSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        trim:true
     },
     body: {
         type: String,
-        required: true
+        required: true,
+        trim:true
     },
     authorId: {
         type: String,
@@ -18,14 +20,14 @@ const blogSchema = new mongoose.Schema({
     tags: [{ type: String }],
     category: {
         type: String,
-        required: true
+        required: true,
+        trim:true
     },
 
     subcategory: [{ type: String }],
     deletedAt: {
         type: Date,
         date: Date.now()
-
     },
     isDeleted: {
         type: Boolean,

@@ -12,24 +12,9 @@ exports.authMid1 = async (req, res, next) => {
   let decodedToken = jwt.verify(token, "project-blogging");
   if (!decodedToken) {
     return res.status().send({ status: false, msg: "Invalid Token" });
-  
   }
-    let  editUser = req.params.blogId
+  console.log(decodedToken);
+  req.authorId = decodedToken.authorId;
 
-    let userCheck = decodedToken.authorId
-    if(userCheck != editUser) return res.status(403).send({status : false, msg : "u are not a valid authorisor"})
-  
-   //req.id = decodedToken
-  next()
+  next();
 };
-
-
- /**exports.authMid2 = async (req,res,next) => {
-  let  editUser = req.params.authorId
-
-  let userCheck = decodedToken.authorId
-  if(userCheck != editUser) return res.status(403).send({status : false, msg : "u are not a valid authorisor"})
-
-  next()
-
-}  */
