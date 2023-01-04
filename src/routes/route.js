@@ -13,8 +13,13 @@ router.get("/blogs", blogController.getBlog);
 
 router.put("/blogs/:blogId", blogController.updateBlog);
 
+//day2
 router.delete("/blogs/:blogId", blogController.deleteBlogByParams);
 
-router.delete("/blogs", blogController.DeletedByQuery) 
+router.delete("/blogs", blogController.DeletedByQuery);
+
+//day3
+
+router.post("/login", authorController.loginAuthor);
 
 module.exports = router;

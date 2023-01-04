@@ -1,34 +1,37 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const authorSchema = new mongoose.Schema({
+const authorSchema = new mongoose.Schema(
+  {
     fname: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
     lname: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
     title: {
-        type: String,
-        enum: ["Mr", "Mrs", "Miss"],
-        required: true
+      type: String,
+      enum: ["Mr", "Mrs", "Miss"],
+      required: true,
     },
 
     email: {
-        type: String,
-        match: [/.+\@.+\..+/],
-        required: true,
-        unique: true
+      type: String,
+      match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, //unique wont work here
+      //so i have written the case in Customercontroller
+      required: true,
+      unique: true,
     },
 
     password: {
-        type: String,
-        required: true
-    }
-
-}, { timestamps: true });
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("author", authorSchema);
