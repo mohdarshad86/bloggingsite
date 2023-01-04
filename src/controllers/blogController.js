@@ -111,9 +111,11 @@ exports.deleteBlogByParams = async(req, res) => {
 
 exports.DeletedByQuery = async(req, res) => {
     try {
-        let filterdata = { isDeleted: false }
-        let { category, subcategory, tags, authorId, isPublished } = req.query
 
+        let { category, subcategory, tags, authorId, isPublished } = req.query
+        let filterdata = {}
+        filterdata.isDeleted = false
+        filterdata.isPublished = false
         if (authorId) {
             filterdata.authorId = authorId
         }
@@ -127,14 +129,15 @@ exports.DeletedByQuery = async(req, res) => {
         if (tags) {
             filterdata.tags = tags
         }
+
+
         if (isPublished) {
             filterdata.isPublished = isPublished
         }
-
         let data = await blogModel.findOne(filterdata)
         if (!data)
-            return res.status(404).send({ status: false, msg: "Blog already deleted" })
-        let updatedData = await blogModel.updateOne(filterdata, { isDeleted: true }, { new: true })
+            return res.status(404).send({ status: false, msg: "blog is published or blog is already deleted" })
+        let updatedData = await blogModel.updateMany(filterdata, { isDeleted: true }, { new: true })
         console.log(updatedData)
         return res.status(200).send({ status: true, msg: "data is deleted" })
 
