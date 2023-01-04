@@ -6,12 +6,14 @@ const authorSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      match: /^[a-zA-Z ]{2,30}$/,
     },
 
     lname: {
       type: String,
       required: true,
       trim: true,
+      match: /^[a-zA-Z ]{2,30}$/,
     },
 
     title: {
