@@ -199,9 +199,9 @@ exports.DeletedByQuery = async (req, res) => {
     if (subcategory) {
       filterdata.subcategory = subcategory;
     }
-
+    console.log(filterdata);
     let blogData = await blogModel.findOne(filterdata);
-
+    console.log(blogData);
     if (!blogData) {
       return res
         .status(404)

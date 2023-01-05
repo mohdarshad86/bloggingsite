@@ -112,7 +112,7 @@ exports.loginAuthor = async (req, res) => {
 
     let password = req.body.password;
 
-    if ((!email || email == "") && (!password || password == "")) {
+    if (!email || email == "" || !password || password == "") {
       res.status(400).send({
         status: false,
         msg: "Please provide email or password",
