@@ -12,6 +12,8 @@ router.get("/authors", authorController.getAuthor);
 
 router.get("/blogs", middleWare.authMid1, blogController.getBlog);
 
+router.post("/login", authorController.loginAuthor);
+
 router.put(
   "/blogs/:blogId",
   middleWare.authMid1,
@@ -19,7 +21,6 @@ router.put(
   blogController.updateBlog
 );
 
-//day2
 router.delete(
   "/blogs/:blogId",
   middleWare.authMid1,
@@ -34,8 +35,5 @@ router.delete(
   blogController.DeletedByQuery
 );
 
-//day3
-
-router.post("/login", authorController.loginAuthor);
 
 module.exports = router;

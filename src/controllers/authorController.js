@@ -1,6 +1,8 @@
 const authorModel = require("../models/authorModel");
 const jwt = require("jsonwebtoken");
 
+//-----------GLOBAL REGX FUNCTION---------
+
 function validateName(id) {
   let regex = /^[a-zA-Z ]{2,30}$/;
   return regex.test(id);
@@ -14,12 +16,16 @@ function validateEmail(id) {
   return regex.test(id);
 }
 
-module.exports.createAuthor = async (req, res) => {
+//-----------CREATE AUTHOR---------
+
+exports.createAuthor = async (req, res) => {
   try {
     let data = req.body;
+
     let { fname, lname, email, title, password } = data;
+
     if (!data) {
-      res
+      return res
         .status(400)
         .send({ status: false, msg: "Please provide details in body" });
     }
@@ -29,6 +35,7 @@ module.exports.createAuthor = async (req, res) => {
         .status(400)
         .send({ status: false, msg: "Please provide correct first name" });
     }
+
     if (!validateName(lname)) {
       return res
         .status(400)
@@ -41,6 +48,7 @@ module.exports.createAuthor = async (req, res) => {
     }
 
     title = data.title = title.trim();
+
     if (title) {
       if (!["Mr", "Mrs", "Miss"].includes(title)) {
         return res
@@ -48,12 +56,14 @@ module.exports.createAuthor = async (req, res) => {
           .send({ status: false, msg: "Please provide valid title" });
       }
     }
+
     if (!validateEmail(email)) {
       return res.status(400).send({
         status: false,
         msg: "Please enter valid email",
       });
     }
+
     if (email) {
       let givenMail = await authorModel.findOne({ email: email });
       // {}, null
@@ -63,6 +73,7 @@ module.exports.createAuthor = async (req, res) => {
           .send({ status: false, msg: "Email already in use" });
       }
     }
+
     if (!validatePass(password)) {
       return res.status(400).send({
         status: false,
@@ -74,24 +85,31 @@ module.exports.createAuthor = async (req, res) => {
 
     res.status(201).send({ status: true, data: authorData });
   } catch (error) {
-    console.log(error.message);
+    console.log("Create Author", error.message);
+
     res.status(500).send({ status: false, msg: error.message });
   }
 };
+
+//-----------GET AUTHOR--------
 
 exports.getAuthor = async (req, res) => {
   try {
     let authors = await authorModel.find();
     res.status(200).send({ status: true, data: authors });
+
   } catch (error) {
-    console.log(error.message, error);
+    console.log("Get Author", error.message);
     res.status(500).send({ status: false, msg: error.message });
   }
 };
 
+//-----------LOGIN AUTHOR--------
+
 exports.loginAuthor = async (req, res) => {
   try {
     let email = req.body.email;
+
     let password = req.body.password;
 
     if ((!email || email == "") && (!password || password == "")) {
@@ -123,7 +141,8 @@ exports.loginAuthor = async (req, res) => {
 
     res.status(201).send({ status: true, data: token });
   } catch (error) {
-    console.log(error.message);
+    console.log("Login Error",error.message);
+
     res.status(500).send({ status: false, msg: error.message });
   }
 };

@@ -24,10 +24,9 @@ const authorSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, //unique wont work here
-      //so i have written the case in Customercontroller
-      required: true,
+      match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       unique: true,
+      required: true,
     },
 
     password: {
