@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect("mongodb+srv://cassmmmg:Functionup2022@cluster0.quflkwm.mongodb.net/Project-1", { useNewUrlParser: true })
 
 .then(() => {
-    console.log("mongoose is connected");
+    console.log("mongoDb is connected");
 
 }).catch((err) => {
     console.log(err);

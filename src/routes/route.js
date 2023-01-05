@@ -30,7 +30,7 @@ router.delete(
 router.delete(
   "/blogs",
   middleWare.authMid1,
-  middleWare.authMid2,
+  
   blogController.DeletedByQuery
 );
 

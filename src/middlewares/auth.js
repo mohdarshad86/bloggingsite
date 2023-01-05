@@ -21,6 +21,7 @@ exports.authMid1 = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log("mid1" , error)
     return res
       .status(500)
       .send({ status: false, msg: "Mid1 Catch", error: error.message });
@@ -31,14 +32,16 @@ exports.authMid2 = async (req, res, next) => {
   try {
     //check
     let blogId = req.params.blogId;
-
+    console.log("error form line 34",blogId)
     if (!blogId) return res.status(400).send("Please provide the blogId.");
 
     if (!isValidObjectId(blogId))
       return res
         .status(400)
         .send({ status: false, msg: "Given blogId is not valid id" });
+      
     let blogData = await blogModel.findById(blogId);
+    console.log("error form line 42",blogData)
     if (!blogData)
       return res.status(404).send({ msg: "Blog not found for this id." });
 
@@ -53,6 +56,7 @@ exports.authMid2 = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log("mid2",error)
     return res
       .status(500)
       .send({ status: false, msg: "Mid2 Catch", error: error.message });

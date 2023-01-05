@@ -27,12 +27,12 @@ module.exports.createAuthor = async (req, res) => {
     if (!validateName(fname)) {
       return res
         .status(400)
-        .send({ status: false, msg: "Please use correct format" });
+        .send({ status: false, msg: "Please provide correct first name" });
     }
     if (!validateName(lname)) {
       return res
         .status(400)
-        .send({ status: false, msg: "Please use correct format" });
+        .send({ status: false, msg: "Please provide corect first name" });
     }
     if (!title || title == "") {
       return res

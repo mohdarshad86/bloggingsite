@@ -121,7 +121,7 @@ exports.updateBlog = async (req, res) => {
       { new: true }
     );
 
-    res.status(201).send({ status: false, data: updatedBlogData });
+    res.status(201).send({ status: true, data: updatedBlogData });
   } catch (error) {
     res.status(500).send({ status: false, msg: error.message });
   }
@@ -130,7 +130,7 @@ exports.updateBlog = async (req, res) => {
 exports.deleteBlogByParams = async (req, res) => {
   try {
     //we have //We have shifted this code to mid2
-
+let blogId = req.params.blogId
     let deleteBlog = await blogModel.findOneAndUpdate(
       { _id: blogId },
       { $set: { isDeleted: true, deletedAt: new Date() } },
@@ -141,7 +141,7 @@ exports.deleteBlogByParams = async (req, res) => {
 
     res.status(200).send({ status: true, msg: "Blog deleted" });
   } catch (error) {
-    console.log(error.message);
+    console.log("delete blog controller",error.message);
     res.status(500).send({ status: false, msg: error.message });
   }
 };
@@ -188,9 +188,9 @@ exports.DeletedByQuery = async (req, res) => {
       });
 
     //Autharisation
-    if (blogData.authorId !== req.authorId) {
-      return res.status(404).send("You are not autharised to edit this blog");
-    }
+    // if (blogData.authorId !== req.authorId) {
+    //   return res.status(404).send("You are not autharised to edit this blog");
+    // }
 
     let updatedData = await blogModel.updateMany(
       filterdata,
