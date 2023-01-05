@@ -62,6 +62,14 @@ exports.getBlog = async(req, res) => {
                 authorId: req.authorId,
             });
 
+            console.log(blogs);
+        if (blogs.length == 0) {
+            return res.status(404).send({
+                status: false,
+                msg: "No such blog found",
+            });
+        }
+
             return res.status(200).send({ status: true, data: blogs });
         }
 
@@ -86,7 +94,7 @@ exports.getBlog = async(req, res) => {
         });
 
         console.log(blogs);
-        if (blogs.length === 0) {
+        if (blogs.length == 0) {
             return res.status(404).send({
                 status: false,
                 msg: "No such blog found",
