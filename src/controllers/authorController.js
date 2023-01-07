@@ -1,22 +1,37 @@
 const authorModel = require("../models/authorModel");
 const jwt = require("jsonwebtoken");
 
-//-----------GLOBAL REGX FUNCTION---------
+
+//-----------GLOBAL REGX FUNCTION---------//
+
 
 function validateName(id) {
-  let regex = /^[a-zA-Z ]{2,30}$/;
+
+  let regex = /^[a-zA-Z ]{1,30}$/;
   return regex.test(id);
-}
-function validatePass(id) {
-  let regex = /^((?=.*[a-zA-Z])(?=.*\d).{3,20}$).*$/;
-  return regex.test(id);
-}
-function validateEmail(id) {
-  let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return regex.test(id);
+
 }
 
-//-----------CREATE AUTHOR---------
+function validatePass(id) {
+
+  let regex = /^((?=.*[a-zA-Z])(?=.*\d).{8,20}$).*$/;
+  return regex.test(id);
+
+}
+
+function validateEmail(id) {
+
+  let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return regex.test(id);
+
+}
+
+//----------------------------------------------------------------------------------//
+
+
+
+//-----------CREATE AUTHOR---------//
+
 
 exports.createAuthor = async (req, res) => {
   try {
@@ -41,12 +56,13 @@ exports.createAuthor = async (req, res) => {
         .status(400)
         .send({ status: false, msg: "Please provide corect first name" });
     }
+
     if (!title || title == "") {
       return res
         .status(400)
         .send({ status: false, msg: "Please provide title" });
     }
-
+       
     title = data.title = title.trim();
 
     if (title) {
@@ -65,8 +81,9 @@ exports.createAuthor = async (req, res) => {
     }
 
     if (email) {
+
       let givenMail = await authorModel.findOne({ email: email });
-      // {}, null
+      
       if (givenMail) {
         return res
           .status(400)
@@ -91,7 +108,11 @@ exports.createAuthor = async (req, res) => {
   }
 };
 
-//-----------GET AUTHOR--------
+
+
+//-----------GET AUTHOR--------//
+
+
 
 exports.getAuthor = async (req, res) => {
   try {
@@ -104,7 +125,11 @@ exports.getAuthor = async (req, res) => {
   }
 };
 
-//-----------LOGIN AUTHOR--------
+
+
+//-----------LOGIN AUTHOR--------//
+
+
 
 exports.loginAuthor = async (req, res) => {
   try {
@@ -115,11 +140,11 @@ exports.loginAuthor = async (req, res) => {
     if (!email || email == "" || !password || password == "") {
       res.status(400).send({
         status: false,
-        msg: "Please provide email or password",
+        msg: "Please provide email or password", 
       });
     }
 
-    let author = await authorModel.findOne({
+    let author = await authorModel.findOne({               
       email: email,
       password: password,
     });
@@ -136,6 +161,8 @@ exports.loginAuthor = async (req, res) => {
       },
       "project-blogging"
     );
+    
+//--.seHeader sehum toeno responekheaderme save kra rhe h taki authentication or autherization k liye humne mannually token set na krna pde ----//
 
     res.status(201).setHeader("x-api-key", token);
 

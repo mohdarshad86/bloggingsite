@@ -6,14 +6,12 @@ const authorSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      match: /^[a-zA-Z ]{2,30}$/,
     },
 
     lname: {
       type: String,
       required: true,
       trim: true,
-      match: /^[a-zA-Z ]{2,30}$/,
     },
 
     title: {
@@ -24,14 +22,16 @@ const authorSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       unique: true,
       required: true,
+      trim :true,
+      lowercase : true,
     },
 
     password: {
       type: String,
       required: true,
+      trim :true,
     },
   },
   { timestamps: true }

@@ -52,8 +52,8 @@ exports.authMid2 = async (req, res, next) => {
         .status(404)
         .send({ status: false, msg: "blog already deleted" });
 
-    if (blogData.authorId !== req.authorId) {
-      return res.status(404).send({
+    if (blogData.authorId.toString() !== req.authorId) {
+      return res.status(403).send({
         status: false,
         msg: "You are not autharised to do this operation",
       });

@@ -1,8 +1,12 @@
 const blogModel = require("../models/blogModel");
 const authorModel = require("../models/authorModel");
-const { isValidObjectId, default: mongoose } = require("mongoose");
+const { isValidObjectId } = require("mongoose");
 
-//---------CREATE BLOG-------------
+
+
+//---------CREATE BLOG-------------//
+
+
 
 exports.createBlog = async (req, res) => {
   try {
@@ -34,7 +38,7 @@ exports.createBlog = async (req, res) => {
         .send({ status: false, msg: "Please Provide category" });
 
     let authors = await authorModel.findById(data.authorId);
-    //{} null
+    //---Agr author id ka data delete ho chuka ho ya authorId vala Doc nhi milla h to vo empty {} ya null dega response me uske liye ye msgsend krna h-------// 
     if (!authors)
       return res.status(404).send({ status: false, msg: "Author not exists" });
 
@@ -48,26 +52,18 @@ exports.createBlog = async (req, res) => {
   }
 };
 
-//---------GET BLOG-------------
+
+//---------GET BLOG---------------//
+
+
 
 exports.getBlog = async (req, res) => {
   try {
     if (Object.keys(req.query).length == 0) {
-      let blogs = await blogModel.find({
-        isDeleted: false,
-        isPublished: true,
-        authorId: req.authorId,
-      });
-
-      if (blogs.length == 0) {
-        return res.status(404).send({
-          status: false,
-          msg: "No such blog found",
-        });
-      }
-
-      return res.status(200).send({ status: true, data: blogs });
-    }
+      return res.status(404).send({
+        status: false,
+        msg: "please provide query",
+      })};
 
     let { authorId, category, subcategory, tags } = req.query;
 
@@ -105,7 +101,11 @@ exports.getBlog = async (req, res) => {
   }
 };
 
-//---------UPDATE BLOGS-------------
+
+
+//---------UPDATE BLOGS---------------//
+
+
 
 exports.updateBlog = async (req, res) => {
   try {
@@ -118,6 +118,10 @@ exports.updateBlog = async (req, res) => {
         return res
           .status(400)
           .send({ status: false, msg: "Given blogId is not a valid id" });
+    }
+
+    if ( Object.keys(data).length == 0 || Object.keys(data) == "" ){
+      return res.status(404).send({ status : false , msg : "Data is not provided for update "}) 
     }
 
     let updatedBlogData = await blogModel.findOneAndUpdate(
@@ -142,18 +146,20 @@ exports.updateBlog = async (req, res) => {
   }
 };
 
-//---------DELETE BLOG BY PATH PARAMS-------------
+
+
+//---------DELETE BLOG BY PATH PARAMS-------------//
+
+
 
 exports.deleteBlogByParams = async (req, res) => {
   try {
     let blogId = req.params.blogId;
 
-    if (blogId) {
       if (!isValidObjectId(blogId))
         return res
           .status(400)
           .send({ status: false, msg: "Given blogId is not a valid id" });
-    }
 
     let deleteBlog = await blogModel.findOneAndUpdate(
       { _id: blogId },
@@ -161,7 +167,7 @@ exports.deleteBlogByParams = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).send({ status: true, msg: "Blog deleted" });
+    res.status(200).send({ status: true, msg: "Blog sucessfully deleted" });
   } catch (error) {
     console.log("Delete by Path Params", error.message);
 
@@ -169,33 +175,38 @@ exports.deleteBlogByParams = async (req, res) => {
   }
 };
 
-//-----------DELETE BY QUERY PARAMS-------------
+
+
+//-----------DELETE BY QUERY PARAMS-------------//
+
+
 
 exports.DeletedByQuery = async (req, res) => {
   try {
-    let filterdata = { isDeleted: false, authorId: req.authorId };
-
+    let filterdata = { isDeleted: false, authorId: req.authorId };  
+    //yha req.authorId kyon kiya ye to req.query.authorId hona chahiye tha
     let { authorId, category, tags, subcategory } = req.query;
 
     if (authorId) {
-      //if authorid is present then check if it is valid or not
-      if (!mongoose.isValidObjectId(req.query.authorId)) {
-        //if it is invalid
+      
+      if (!isValidObjectId(authorId)) {
+        
         return res
           .status(400)
           .send({ status: false, msg: "Please provide valid id" });
       } else {
-        //else valid then use it as condition to find the doc
-        filterdata.authorId = authorId;
+          filterdata.authorId = authorId;
       }
     }
 
     if (category) {
       filterdata.category = category;
     }
+
     if (tags) {
       filterdata.tags = tags;
     }
+    
     if (subcategory) {
       filterdata.subcategory = subcategory;
     }
