@@ -138,7 +138,7 @@ exports.loginAuthor = async (req, res) => {
     let password = req.body.password;
 
     if (!email || email == "" || !password || password == "") {
-      res.status(400).send({
+      return res.status(400).send({
         status: false,
         msg: "Please provide email or password", 
       });
@@ -166,7 +166,7 @@ exports.loginAuthor = async (req, res) => {
 
     res.status(201).setHeader("x-api-key", token);
 
-    res.status(201).send({ status: true, data: token });
+   return res.status(201).send({ status: true, data: token });
   } catch (error) {
     console.log("Login Error",error.message);
 
